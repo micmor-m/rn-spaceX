@@ -51,7 +51,7 @@ export default function App() {
             filteredLaunch.launch_date = humanDateFormat;
             break;
           case "launch_site":
-            console.log("LounchKEY is ", launch[key]);
+            //console.log("LounchKEY is ", launch[key]);
             filteredLaunch.site_name = launch[key].site_name;
             break;
           case "launch_success":
@@ -82,6 +82,9 @@ export default function App() {
       myFinalData.push(launch);
       console.log("MY FINAL DATA", myFinalData);
     });
+    setCourseGoals(() => courseGoals.concat(myFinalData));
+
+    console.log("courseGoals", courseGoals);
   };
 
   //manage the state when the button is press
@@ -96,11 +99,11 @@ export default function App() {
   };
 
   //manage to delete a component in the rendered list
-  const removeGoalHandler = (goalId) => {
-    setCourseGoals((currentGoals) => {
-      return currentGoals.filter((goal) => goal.id !== goalId);
-    });
-  };
+  // const removeGoalHandler = (goalId) => {
+  //   setCourseGoals((currentGoals) => {
+  //     return currentGoals.filter((goal) => goal.id !== goalId);
+  //   });
+  // };
 
   const cancelGoalAdditionHandler = () => {
     //close modal after update the goal
@@ -117,12 +120,13 @@ export default function App() {
         onCancel={cancelGoalAdditionHandler}
       />
       <FlatList
+        keyExtractor={(item, index) => item.flight_number}
         data={courseGoals}
         renderItem={(itemData) => (
           <GoalItem
-            id={itemData.item.id}
-            onDelete={removeGoalHandler}
-            title={itemData.item.value}
+            //id={itemData.item.id}
+            // onDelete={removeGoalHandler}
+            info={itemData.item}
           />
         )}
       />
