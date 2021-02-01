@@ -4,6 +4,7 @@ import { StyleSheet, Text, View, TextInput, Button } from "react-native";
 
 export default function App() {
   const [enteredGoal, setEnteredGoal] = useState("");
+  const [courseGoals, setCourseGoals] = useState([]);
 
   //manage the state for each key pressed
   const goalInputHandler = (enteredText) => {
@@ -12,7 +13,9 @@ export default function App() {
 
   //manage the state when the button is press
   const addGoalHandler = () => {
-    console.log(enteredGoal);
+    console.log("Btn pressed");
+    // make a copy by spread operator and add the new goal
+    setCourseGoals((currentGoals) => [...currentGoals, enteredGoal]);
   };
 
   return (
@@ -28,13 +31,17 @@ export default function App() {
         {/* whitout parentesis because I dont want the function execute immediatly */}
         <Button title="ADD" onPress={addGoalHandler} />
       </View>
-      <View></View>
+      <View>
+        {courseGoals.map((goal) => (
+          <Text key={goal}>{goal}</Text>
+        ))}
+      </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  screen: { padding: 15 },
+  screen: { padding: 30 },
   inputContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
