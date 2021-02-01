@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, TextInput, StyleSheet, Button } from "react-native";
+import { View, TextInput, StyleSheet, Button, Modal } from "react-native";
 
 const GoalInput = (props) => {
   const [enteredGoal, setEnteredGoal] = useState("");
@@ -10,25 +10,27 @@ const GoalInput = (props) => {
   };
 
   return (
-    <View style={styles.inputContainer}>
-      <TextInput
-        style={styles.input}
-        placeholder="Course Goal"
-        // only pass the reference  of the function without parentesis
-        onChangeText={goalInputHandler}
-        value={enteredGoal}
-      />
-      {/* whitout parentesis because I dont want the function execute immediatly */}
-      <Button title="ADD" onPress={props.onAddGoal.bind(this, enteredGoal)} />
-    </View>
+    <Modal visible={props.visible} animationType="slide">
+      <View style={styles.inputContainer}>
+        <TextInput
+          style={styles.input}
+          placeholder="Course Goal"
+          // only pass the reference  of the function without parentesis
+          onChangeText={goalInputHandler}
+          value={enteredGoal}
+        />
+        {/* whitout parentesis because I dont want the function execute immediatly */}
+        <Button title="ADD" onPress={props.onAddGoal.bind(this, enteredGoal)} />
+      </View>
+    </Modal>
   );
 };
 
 const styles = StyleSheet.create({
   inputContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
+    justifyContent: "center",
     alignItems: "center",
+    flex: 1,
   },
   input: {
     width: "80%",
@@ -36,6 +38,7 @@ const styles = StyleSheet.create({
     borderColor: "gray",
     borderWidth: 1,
     padding: 10,
+    marginBottom: 10,
   },
 });
 
