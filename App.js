@@ -8,6 +8,7 @@ import GoalInput from "./components/GoalInput";
 export default function App() {
   const [courseGoals, setCourseGoals] = useState([]);
   const [isAddMode, setIsAddMode] = useState(false); //to handle modal
+  const [currentIndex, setCurrentIndex] = useState(null);
 
   // const componentWillMount = () => {
   //   this.fetchData();
@@ -15,8 +16,10 @@ export default function App() {
 
   //fetch data from API
   fetchData = async () => {
+    setCourseGoals([]);
     const response = await fetch(
-      "https://api.spacexdata.com/v3/launches?limit=3"
+      // "https://api.spacexdata.com/v3/launches?limit=3"
+      "https://api.spacexdata.com/v3/launches?limit=109" //the API return 2 flight with same number 110
     );
     const launches = await response.json();
     //console.log(launches);
@@ -55,10 +58,13 @@ export default function App() {
             filteredLaunch.site_name = launch[key].site_name;
             break;
           case "launch_success":
-            filteredLaunch.launch_success = launch[key];
-            if (launch[key] === false)
+            if (launch[key] === true) {
+              filteredLaunch.launch_outcome = "Success";
+            } else if (launch[key] === false) {
+              filteredLaunch.launch_outcome = "Failure";
               filteredLaunch.failureReason =
                 launch.launch_failure_details.reason;
+            }
             break;
         }
       }
@@ -76,15 +82,17 @@ export default function App() {
         (element) => element.name === launch.site_name
       );
       if (target) {
-        launch.lat = target.location.latitude;
-        launch.lng = target.location.longitude;
+        launch.lat = `${target.location.latitude}`; //stringify
+        launch.lng = `${target.location.longitude}`;
       }
       myFinalData.push(launch);
-      console.log("MY FINAL DATA", myFinalData);
+      //console.log("MY FINAL DATA", myFinalData);
     });
-    setCourseGoals(() => courseGoals.concat(myFinalData));
+    // setCourseGoals(() => courseGoals.concat(myFinalData));
+    //setCourseGoals([]);
+    setCourseGoals(myFinalData);
 
-    console.log("courseGoals", courseGoals);
+    //console.log("courseGoals", courseGoals);
   };
 
   //manage the state when the button is press
@@ -110,6 +118,14 @@ export default function App() {
     setIsAddMode(false);
   };
 
+  const toggleHandler = (id, currentIndex) => {
+    if (id === currentIndex) {
+      setCurrentIndex(null);
+    } else {
+      setCurrentIndex(id);
+    }
+  };
+
   return (
     <View style={styles.screen}>
       {/* <Button title="Add New Goal" onPress={() => setIsAddMode(true)} /> */}
@@ -124,9 +140,11 @@ export default function App() {
         data={courseGoals}
         renderItem={(itemData) => (
           <GoalItem
-            //id={itemData.item.id}
+            id={itemData.item.flight_number}
             // onDelete={removeGoalHandler}
+            onToggle={toggleHandler}
             info={itemData.item}
+            currentIndex={currentIndex}
           />
         )}
       />
