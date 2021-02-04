@@ -1,6 +1,6 @@
 # SpaceX App
 
-SpaceX App an application built with Expo, React and React-Native that displays a table of accordions which is scrollable displaying the data of each SpaxeX rockets' launch.
+SpaceX App is an application built with Expo, React and React-Native that displays a table of accordions which is scrollable displaying the data of each SpaxeX rockets' launch.
 
 ## Dependencies
 

@@ -1,9 +1,5 @@
-import React from "react";
-import { StyleSheet, View, Text } from "react-native";
-
 //fetch data from API
 const fetchData = async () => {
-  //setCourseGoals([]);
   //GET all launches
   const response = await fetch(
     //"https://api.spacexdata.com/v3/launches?limit=10" //for test
@@ -67,7 +63,6 @@ const fetchData = async () => {
   });
 
   //set state with myFinalData
-  //setRockets(myFinalData);
   return myFinalData;
 };
 
