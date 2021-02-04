@@ -4,8 +4,8 @@ SpaceX App is an application built with Expo, React and React-Native that displa
 
 ## Final Product
 
-!["Screenshot of Rockets list"]()
-!["screenshot of Toggled Rocket"]()
+!["Screenshot of Rockets list"](https://github.com/micmor-m/rn-spaceX/blob/master/docs/RocketList.png)
+!["screenshot of Toggled Rocket"](https://github.com/micmor-m/rn-spaceX/blob/master/docs/ToggledRocket.png)
 
 ## Dependencies
 
