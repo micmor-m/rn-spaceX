@@ -1,11 +1,9 @@
 import React from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
-import { Ionicons, AntDesign, Entypo } from "@expo/vector-icons";
+import { Entypo } from "@expo/vector-icons";
 
-const GoalItem = (props) => {
-  //console.log("Goal item props", props);
+const RocketItem = (props) => {
   return (
-    // <TouchableOpacity onPress={props.onDelete.bind(this, props.id)}>
     <TouchableOpacity
       style={styles.cardContainer}
       onPress={props.onToggle.bind(this, props.id, props.currentIndex)}
@@ -13,7 +11,6 @@ const GoalItem = (props) => {
       <View style={styles.listItem}>
         <View style={styles.titleContainer}>
           <Text style={styles.title}>{props.info.mission_name}</Text>
-          {/* <Ionicons name="md-remove" size={10} color={"red"} /> */}
           <Entypo name="rocket" size={24} color="black" />
         </View>
 
@@ -60,7 +57,8 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
+    flexWrap: "wrap",
   },
 });
 
-export default GoalItem;
+export default RocketItem;
