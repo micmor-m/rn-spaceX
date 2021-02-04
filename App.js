@@ -1,26 +1,44 @@
 import { StatusBar } from "expo-status-bar";
 import React, { useState, Component } from "react";
 import { StyleSheet, View, Button, FlatList } from "react-native";
+import * as Font from "expo-font";
 
 import GoalItem from "./components/GoalItem";
 import GoalInput from "./components/GoalInput";
+import AppLoading from "expo-app-loading";
+import Header from "./components/Header";
+
+const fetchFonts = () => {
+  return Font.loadAsync({
+    "open-sans": require("./assets/fonts/OpenSans-Regular.ttf"),
+    "open-sans-bold": require("./assets/fonts/OpenSans-Bold.ttf"),
+  });
+};
 
 export default function App() {
   const [courseGoals, setCourseGoals] = useState([]);
   const [isAddMode, setIsAddMode] = useState(false); //to handle modal
   const [currentIndex, setCurrentIndex] = useState(null);
+  const [fontLoaded, setFontLoaded] = useState(false);
 
-  // const componentWillMount = () => {
-  //   this.fetchData();
-  // }
+  if (!fontLoaded) {
+    return (
+      <AppLoading
+        startAsync={fetchFonts}
+        onFinish={() => setFontLoaded(true)}
+        onError={(error) => console.log("Error AppLoading:", error)}
+      />
+    );
+  }
 
   //fetch data from API
   fetchData = async () => {
-    setCourseGoals([]);
+    //setCourseGoals([]);
     const response = await fetch(
-      // "https://api.spacexdata.com/v3/launches?limit=3"
-      "https://api.spacexdata.com/v3/launches?limit=109" //the API return 2 flight with same number 110
+      "https://api.spacexdata.com/v3/launches?limit=10"
+      // "https://api.spacexdata.com/v3/launches?limit=109" //the API return 2 flight with same number 110
     );
+    // return response;
     const launches = await response.json();
     //console.log(launches);
     const responseOne = await fetch("https://api.spacexdata.com/v3/launchpads");
@@ -82,8 +100,8 @@ export default function App() {
         (element) => element.name === launch.site_name
       );
       if (target) {
-        launch.lat = `${target.location.latitude}`; //stringify
-        launch.lng = `${target.location.longitude}`;
+        launch.lat = target.location.latitude;
+        launch.lng = target.location.longitude;
       }
       myFinalData.push(launch);
       //console.log("MY FINAL DATA", myFinalData);
@@ -91,9 +109,13 @@ export default function App() {
     // setCourseGoals(() => courseGoals.concat(myFinalData));
     //setCourseGoals([]);
     setCourseGoals(myFinalData);
-
-    //console.log("courseGoals", courseGoals);
+    //return myFinalData;
+    // //console.log("courseGoals", courseGoals);
   };
+
+  // componentDidMount = () => {
+  //   fetchData();
+  // };
 
   //manage the state when the button is press
   const addGoalHandler = (goalTitle) => {
@@ -126,17 +148,15 @@ export default function App() {
     }
   };
 
+  fetchData();
+
   return (
     <View style={styles.screen}>
       {/* <Button title="Add New Goal" onPress={() => setIsAddMode(true)} /> */}
-      <Button title="Add New Goal" onPress={fetchData} />
-      <GoalInput
-        visible={isAddMode}
-        onAddGoal={addGoalHandler}
-        onCancel={cancelGoalAdditionHandler}
-      />
+      {/* <Button title="Add New Goal" onPress={fetchData} /> */}
+      <Header title="SpaceX Rocket" />
       <FlatList
-        keyExtractor={(item, index) => item.flight_number}
+        keyExtractor={(item, index) => item.flight_number.toString()}
         data={courseGoals}
         renderItem={(itemData) => (
           <GoalItem
@@ -153,5 +173,5 @@ export default function App() {
 }
 
 const styles = StyleSheet.create({
-  screen: { padding: 30 },
+  screen: { padding: 0 },
 });

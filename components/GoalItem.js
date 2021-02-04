@@ -1,5 +1,6 @@
 import React from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { Ionicons, AntDesign, Entypo } from "@expo/vector-icons";
 
 const GoalItem = (props) => {
   //console.log("Goal item props", props);
@@ -10,7 +11,12 @@ const GoalItem = (props) => {
       onPress={props.onToggle.bind(this, props.id, props.currentIndex)}
     >
       <View style={styles.listItem}>
-        <Text>{props.info.mission_name}</Text>
+        <View style={styles.titleContainer}>
+          <Text style={styles.title}>{props.info.mission_name}</Text>
+          {/* <Ionicons name="md-remove" size={10} color={"red"} /> */}
+          <Entypo name="rocket" size={24} color="black" />
+        </View>
+
         {props.id === props.currentIndex && (
           <View style={styles.subCategoryList}>
             <Text>Mission name: {props.info.mission_name}</Text>
@@ -36,10 +42,24 @@ const styles = StyleSheet.create({
     borderColor: "black",
     borderWidth: 1,
     marginVertical: 10,
+    marginHorizontal: 20,
     flexGrow: 1,
+    borderRadius: 10,
+    backgroundColor: "white",
+    elevation: 5,
   },
   cardContainer: {
     flexGrow: 1,
+    backgroundColor: "#b19c944a",
+  },
+  title: {
+    fontFamily: "open-sans-bold",
+    fontSize: 25,
+  },
+  titleContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
   },
 });
 
